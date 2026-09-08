@@ -1,0 +1,19 @@
+{
+  "licenses": [
+    {
+      "id": "3e6e7d84-68b0-42c6-a9d5-8d2307d5ff01",
+      "key_hash": "cba5dd4f8c4464d1b5fee7479ea72e72534838a1d6f787d33092d6681a7b71b1d464b1ff2c9d557d1752dc83b9989fdbd1656b62e17975c88b9f3c06f8aa1565",
+      "salt": "6fef24cecea0f932ceee1dcdaea3db2a",
+      "created_at": "2026-09-08T09:22:29.899Z",
+      "expires_at": null,
+      "duration": "lifetime",
+      "status": "active",
+      "activation_count": 0,
+      "device_limit": 3,
+      "last_activation_at": null,
+      "last_device_info": null
+    }
+  ],
+  "activations": [],
+  "audit_logs": []
+}
