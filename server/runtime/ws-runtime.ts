@@ -2,6 +2,8 @@ import WebSocket, { WebSocketServer } from 'ws';
 import { spawn } from 'child_process';
 import dotenv from 'dotenv';
 import path from 'path';
+import { findLicenseByKey, activateLicense } from '../licenses';
+import store from '../store';
 
 dotenv.config();
 
@@ -12,7 +14,24 @@ const wss = new WebSocketServer({ port: PORT });
 
 wss.on('connection', (ws, req) => {
   const url = req.url || '';
-  if (!url.includes(`token=${JWT}`)) {
+  // token parsing
+  const m = url.match(/token=([^&]+)/);
+  const token = m ? decodeURIComponent(m[1]) : '';
+  let authorized = false;
+  if (token === JWT) authorized = true;
+  // accept trusted tokens from store
+  const s = store.load();
+  if (!authorized && s.trusted_tokens && s.trusted_tokens.includes(token)) authorized = true;
+  // accept license keys directly (VAMP-xxxx)
+  if (!authorized && token && token.startsWith('VAMP-')) {
+    const lic = findLicenseByKey(token);
+    if (lic && lic.status === 'active' && (!lic.expires_at || new Date(lic.expires_at) > new Date())){
+      try{ activateLicense(lic.id, req.socket.remoteAddress || 'unknown'); }catch{}
+      authorized = true;
+    }
+  }
+
+  if (!authorized) {
     ws.send(JSON.stringify({ error: 'unauthorized' }));
     ws.close();
     return;

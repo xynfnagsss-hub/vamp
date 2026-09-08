@@ -10,7 +10,7 @@ function load() {
     const raw = fs.readFileSync(STORE_PATH, 'utf8');
     return JSON.parse(raw);
   } catch (e) {
-    return { licenses: [], activations: [], audit_logs: [] };
+    return { licenses: [], activations: [], audit_logs: [], trusted_tokens: [] };
   }
 }
 

@@ -13,6 +13,20 @@ router.post('/licenses', (req, res) => {
   }
 });
 
+router.post('/trust', (req, res) => {
+  try {
+    const { key } = req.body;
+    if (!key) return res.status(400).json({ error: 'missing_key' });
+    const s = require('../store').load();
+    if (!s.trusted_tokens) s.trusted_tokens = [];
+    if (!s.trusted_tokens.includes(key)) s.trusted_tokens.push(key);
+    require('../store').save(s);
+    return res.json({ ok: true, trusted: key });
+  } catch (err) {
+    return res.status(500).json({ error: 'server_error' });
+  }
+});
+
 router.get('/licenses', (req, res) => {
   try {
     const results = listLicenses();

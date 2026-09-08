@@ -16,6 +16,10 @@ async function main() {
     const j = await res.json();
     if (!j.ok) return console.error('Error:', j);
     const lic = j.license;
+    // auto-trust the key so the local runtime accepts it as a token
+    try{
+      await globalThis.fetch(`${API}/trust`, {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ key: lic.key })});
+    }catch(e){ /* ignore */ }
     printBox([
       '          VAMP LICENSE',
       `Duration: ${lic.duration}`,
