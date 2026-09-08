@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Build client
-        run: npm run build
+        run: npm run build:client
 
       - name: Build Windows installer
         run: npx electron-builder --win --x64 --ia32=false
