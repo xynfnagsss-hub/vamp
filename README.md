@@ -35,3 +35,5 @@ npm run build:win
 ```
 
 Note: local packaging requires a working Electron install and may need administrator rights.
+
+CI: trigger new build
